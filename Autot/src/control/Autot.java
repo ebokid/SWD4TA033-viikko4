@@ -1,59 +1,52 @@
 package control;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import model.Auto;
+import model.dao.Dao;
 
-/**
- * Servlet implementation class Autot
- */
-@WebServlet("/autot")
+
+@WebServlet("/autot/*")
 public class Autot extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+   
     public Autot() {
         super();
         System.out.println("Autot.Autot()");
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("Autot.doGet()");	
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		System.out.println("Autot.doGet()");
+		String pathInfo = request.getPathInfo();	//haetaan kutsun polkutiedot, esim. /audi			
+		System.out.println("polku: "+pathInfo);	
+		String hakusana = pathInfo.replace("/", "");
+		Dao dao = new Dao();
+		ArrayList<Auto> autot = dao.listaaKaikki(hakusana);
+		System.out.println(autot);
+		String strJSON = new JSONObject().put("autot", autot).toString();	
+		response.setContentType("application/json");
+		 response.getWriter().append("Served at: ").append(request.getContextPath());
+		out.println(strJSON);		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("Autot.doPost()");
-		doGet(request, response);
+		System.out.println("Autot.doPost()");		
 	}
 
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Autot.doPut()");
-		// TODO Auto-generated method stub
+		System.out.println("Autot.doPut()");		
 	}
-
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
-	 */
+	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Autot.doDelete()");
-		// TODO Auto-generated method stub
+		System.out.println("Autot.doDelete()");		
 	}
 
 }

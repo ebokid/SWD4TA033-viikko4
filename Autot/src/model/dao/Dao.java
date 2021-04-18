@@ -37,7 +37,8 @@ public class Dao {
 			con=yhdista();
 			if(con!=null){ //jos yhteys onnistui
 				stmtPrep = con.prepareStatement(sql);        		
-        		rs = stmtPrep.executeQuery();   
+        		rs = stmtPrep.executeQuery();
+        		System.out.println("Query returns: " + rs);
 				if(rs!=null){ //jos kysely onnistui
 					//con.close();					
 					while(rs.next()){
