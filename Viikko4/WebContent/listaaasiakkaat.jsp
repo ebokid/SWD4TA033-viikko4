@@ -6,18 +6,13 @@
 <meta charset="ISO-8859-1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/asiakkaat.css">
-<title>Insert title here</title>
-<style>
-.oikealle{
-	text-align: right;
-}
-</style>
+<title>Listaa Asiakkaat</title>
 </head>
 <body>
 <table id="listaus">
 	<thead>	
 		<tr class="tbl-filter">
-			<th class="oikealle">Hakusana:</th>
+			<th>Hakusana:</th>
 			<th colspan="2"><input type="text" id="hakusana"></th>
 			<th><input type="button" value="hae" id="hakunappi"></th>
 		</tr>			
