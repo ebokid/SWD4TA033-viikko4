@@ -1,0 +1,15 @@
+@charset "ISO-8859-1";
+
+.ilmo {
+	color: #fff;
+	text-align: center;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+table {
+  width:75%;
+  table-layout: fixed;
+}
