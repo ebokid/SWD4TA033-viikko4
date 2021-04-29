@@ -25,6 +25,7 @@
 			<th>Sukunimi</th>
 			<th>Puhelinnumero</th>
 			<th>Sähköposti</th>
+			<th/>
 			<th/>							
 		</tr>
 	</thead>
@@ -58,7 +59,8 @@ function haeAsiakkaat(){
         	htmlStr+="<td>"+field.etunimi+"</td>";
         	htmlStr+="<td>"+field.sukunimi+"</td>";
         	htmlStr+="<td>"+field.puhelin+"</td>";
-        	htmlStr+="<td>"+field.sposti+"</td>";  
+        	htmlStr+="<td>"+field.sposti+"</td>";
+        	htmlStr+="<td><a href='muutaasiakas.jsp?id="+field.asiakas_id+"'>Muuta</a>&nbsp;"; 
         	htmlStr+="<td><div class='pointer' onclick=poista('"+field.asiakas_id+"')>Poista</div></td>";  
         	htmlStr+="</tr>";
         	$("#listaus tbody").append(htmlStr);

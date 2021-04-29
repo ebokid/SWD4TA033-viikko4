@@ -123,4 +123,51 @@ public class Dao {
 		}	
         return true;
 	}
+	
+	public Asiakas etsiAsiakas(int id) {
+		Asiakas asiakas = null;
+		sql = "SELECT * FROM asiakkaat WHERE asiakas_id=?";       
+		try {
+			con=yhdistaMyynti();
+			if(con!=null){ 
+				stmtPrep = con.prepareStatement(sql); 
+				stmtPrep.setInt(1, id);
+        		rs = stmtPrep.executeQuery();  
+        		if(rs.isBeforeFirst()){ 
+        			rs.next();
+        			asiakas = new Asiakas();        			
+					asiakas.setAsiakas_id(rs.getInt(1));
+					asiakas.setEtunimi(rs.getString(2));
+					asiakas.setSukunimi(rs.getString(3));
+					asiakas.setPuhelin(rs.getString(4));
+					asiakas.setSposti(rs.getString(5));	      			      			
+				}        		
+			}	
+			con.close();  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return asiakas;		
+	}
+
+	
+	public boolean muutaAsiakas(Asiakas asiakas, int id){
+		sql="UPDATE asiakkaat SET etunimi=?, sukunimi=?, puhelin=?, sPosti=? WHERE asiakas_id=?";						  
+		try {
+			con = yhdistaMyynti();
+			stmtPrep=con.prepareStatement(sql); 
+			stmtPrep.setString(1, asiakas.getEtunimi());
+			stmtPrep.setString(2, asiakas.getSukunimi());
+			stmtPrep.setString(3, asiakas.getPuhelin());
+			stmtPrep.setString(4, asiakas.getSposti());
+			stmtPrep.setInt(5, id);
+			stmtPrep.executeUpdate();
+	        con.close();
+		} catch (Exception e) {				
+			e.printStackTrace();
+			return false;
+		}				
+		return true;
+	}
+
 }
