@@ -16,6 +16,7 @@ table {
   table-layout: fixed;
 }
 
+
 .tbl-filter {
   display: flex;
  }
@@ -64,8 +65,36 @@ section{
   margin: 50px;
 }
 
+a:link {
+	color: #ffffff;
+}
+
+a:visited {
+	color: #ffffff;
+}
+
+a:hover {
+	color: #f0cefd;
+}
+
+
+a:visited {
+	color: #ffffff;
+}
+
+a:active {
+	color: #ffffff;
+}
+
+
 .pointer {
 	cursor: pointer;
+}
+
+a:-webkit-any-link {
+    color: -webkit-link;
+    text-decoration: none;
+    color: #ffffff;
 }
 
 

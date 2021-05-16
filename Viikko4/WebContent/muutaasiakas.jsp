@@ -12,11 +12,11 @@
 <title>Muuta Asiakas</title>
 </head>
 	<body>
-		<form id="tiedot">
+		<form id="tiedot" action="muutaasiakas" method="post">
 			<table>
 				<thead>	
 					<tr>
-						<th colspan="5" class="oikealle"><span id="takaisin" class="pointer"><< Takaisin listaukseen</span></th>
+						<th colspan="5" class="oikealle"><a href="listaaasiakkaat.jsp" id="takaisin" class="pointer"><< Takaisin listaukseen</a></th>
 					</tr>		
 					<tr>
 						<th>Etunimi</th>
@@ -28,91 +28,47 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="text" name="etunimi" id="etunimi"></td>
-						<td><input type="text" name="sukunimi" id="sukunimi"></td>
-						<td><input type="text" name="puhelin" id="puhelin"></td>
-						<td><input type="email" name="sposti" id="sposti"></td> 
-						<td><input type="submit" id="tallenna" class="pointer" value="Hyväksy"></td>
+						<td><input type="text" name="etunimi" id="etunimi" value="${asiakas.etunimi}"></td>
+						<td><input type="text" name="sukunimi" id="sukunimi" value="${asiakas.sukunimi}"></td>
+						<td><input type="text" name="puhelin" id="puhelin" value="${asiakas.puhelin}"></td>
+						<td><input type="email" name="sposti" id="sposti" value="${asiakas.sposti}"></td> 
+						<td><input type="submit" id="tallenna" class="pointer" value="Hyväksy" onclick="tarkasta()"></td>
 					</tr>
 				</tbody>
 			</table>
-				<input type="hidden" name="asiakas_id" id="asiakas_id">	
-				<div class="ilmo"><span id="ilmo"></span></div>
+				<input type="hidden" name="asiakas_id" id="asiakas_id" value="${asiakas.asiakas_id}">	
 		</form>
+						<div class="ilmo"><span id="ilmo"></span></div>
 	</body>
 <script>
 
+function tarkasta(){
+	var d = new Date();
+	if(document.getElementById("etunimi").value.length<2){
+		document.getElementById("ilmo").innerHTML="Etunimessä tulee olla vähintään kaksi kirjainta";
+		return;
+	}else if(document.getElementById("sukunimi").value.length<2){
+		document.getElementById("ilmo").innerHTML="Sukunimessä tulee olla vähintään kaksi kirjainta";
+		return;
+	}else if(document.getElementById("puhelin").value.length<6){
+		document.getElementById("ilmo").innerHTML="Puhelinnumerossa tulee olla vähintään 6 merkkiä";
+		return;
+	}else if(document.getElementById("sposti").value.length<5){
+		document.getElementById("ilmo").innerHTML="Sähköpostissa tulaa olla vähintään 5 merkkiä";
+		return;
+	}
+	document.getElementById("etunimi").value=siivoa(document.getElementById("etunimi").value);
+	document.getElementById("sukunimi").value=siivoa(document.getElementById("sukunimi").value);
+	document.getElementById("puhelin").value=siivoa(document.getElementById("puhelin").value);
+	document.getElementById("sposti").value=siivoa(document.getElementById("sposti").value);
+	document.forms["tiedot"].submit();
+}
 
-$(document).ready(function(){
-	$("#takaisin").click(function(){
-		document.location="listaaasiakkaat.jsp";
-	});
-	var id = requestURLParam("id");	
-	$.ajax({url:"asiakkaat/haeyksi/"+id, type:"GET", dataType:"json", success:function(result){	
-		$("#asiakas_id").val(result.asiakas_id);	
-		$("#etunimi").val(result.etunimi);	
-		$("#sukunimi").val(result.sukunimi);
-		$("#puhelin").val(result.puhelin);
-		$("#sposti").val(result.sposti);			
-    }});
-	$("#tiedot").validate({						
-		rules: {
-			asiakas_id:  {
-				required: true			
-			},	
-			etunimi:  {
-				required: true,
-				minlength: 2				
-			},	
-			sukunimi:  {
-				required: true,
-				minlength: 2				
-			},
-			puhelin:  {
-				required: true,
-				minlength: 6
-			},	
-			sposti:  {
-				required: true,
-				minlength: 5,
-			}	
-		},
-		messages: {
-			etunimi: {     
-				required: "Puuttuu",
-				minlength: "Liian lyhyt"			
-			},
-			sukunimi: {
-				required: "Puuttuu",
-				minlength: "Liian lyhyt"
-			},
-			puhelin: {
-				required: "Puuttuu",
-				minlength: "Liian lyhyt"
-			},
-			sposti: {
-				required: "Puuttuu",
-				minlength: "Liian lyhyt",
-			}
-		},			
-		submitHandler: function(form) {	
-			paivitaTiedot();
-		}		
-	}); 	
-});
-
-
-
-function paivitaTiedot(){	
-	var formJsonStr = formDataJsonStr($("#tiedot").serializeArray());
-	$.ajax({url:"asiakkaat", data:formJsonStr, type:"PUT", dataType:"json", success:function(result) { //result on joko {"response:1"} tai {"response:0"}       
-		if(result.response==0){
-      	$("#ilmo").html("Asiakkaan päivittäminen epäonnistui.");
-      }else if(result.response==1){			
-      	$("#ilmo").html("Asiakkaan päivittäminen onnistui.");
-      	$("#etunimi", "#sukunimi", "#puhelin", "#sposti").val("");
-		}
-  }});	
+function siivoa(teksti){
+	teksti=teksti.replace("<","");
+	teksti=teksti.replace(";","");
+	teksti=teksti.replace("'","''");
+	return teksti;
 }
 
 </script>
